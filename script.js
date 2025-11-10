@@ -2,49 +2,35 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4MtbB9zPnDa0sYjcT1e4EPFq901k26RzYGYfCIGT1J18911TU2wxZbe6qXyvdC865mg/exec';
 const DRIVE_UPLOAD_URL = 'https://script.google.com/macros/s/AKfycbwiRAik98enRKbmbne-aCHMk7sw0p68al-RfB2KntpffWchCLbapFUgOWOsnjJ0xVUocg/exec';
 const GOOGLE_CLIENT_ID = '507773507877-t1prpckunc9l2700dgfflhfk6jf2de5c.apps.googleusercontent.com';
-async function saveAdminRecord(form, photoFile, soiFile) {
+async function saveAdminRecord(form, photo, soi) {
   try {
-    // 1️⃣ Upload Photo (if provided)
-    if(photoFile){
+    // Upload photo first (if exists)
+    if(photo) {
       const photoData = new FormData();
-      photoData.append('file', photoFile);
-      const photoResp = await fetch(DRIVE_UPLOAD_URL, {
-        method: 'POST',
-        body: photoData
-      });
-      const photoResult = await photoResp.json();
-      form.photoURL = photoResult.url || '';
-    } else {
-      form.photoURL = '';
+      photoData.append('file', photo);
+      const photoRes = await fetch(DRIVE_UPLOAD_URL, {method:'POST', body:photoData});
+      const photoLink = await photoRes.text();
+      form.photoURL = photoLink;
     }
 
-    // 2️⃣ Upload SOI file (if provided)
-    if(soiFile){
+    // Upload SOI file
+    if(soi) {
       const soiData = new FormData();
-      soiData.append('file', soiFile);
-      const soiResp = await fetch(DRIVE_UPLOAD_URL, {
-        method: 'POST',
-        body: soiData
-      });
-      const soiResult = await soiResp.json();
-      form.soiFileLink = soiResult.url || '';
-    } else {
-      form.soiFileLink = '';
+      soiData.append('file', soi);
+      const soiRes = await fetch(DRIVE_UPLOAD_URL, {method:'POST', body:soiData});
+      const soiLink = await soiRes.text();
+      form.soiFileLink = soiLink;
     }
 
-    // 3️⃣ Post the full record to your Apps Script
-    await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(form)
-    });
+    // Send JSON to admin sheet
+    await fetch(SCRIPT_URL, {method:'POST', body: JSON.stringify(form)});
 
-    // 4️⃣ Refresh the list
+    // Refresh table
     renderAdminList();
-
     alert(Record saved for: ${form.name});
-  } catch(err){
+  } catch(err) {
     console.error(err);
-    alert('Error saving record: ' + err.message);
+    alert("Error saving record. Check console.");
   }
 }
 async function renderAdminList() {
