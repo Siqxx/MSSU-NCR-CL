@@ -1,5 +1,5 @@
-﻿/* ---------- CONFIG - replace these with your endpoints / keys ---------- */
-const SCRIPT_URL = https://script.google.com/macros/s/AKfycbz9FmJzjWDQb4Klu3ba5rke_3Icv0qqHdi81mBDeAxbYLeX46GFD_9JQkuPJnu4vHLlyQ/exec; // GET returns rows JSON, POST accepts record
+/* ---------- CONFIG - replace these with your endpoints / keys ---------- */
+const SCRIPT_URL = https://script.google.com/macros/s/AKfycbyj514mwIiMR-yQRAYMNkf6KKDVcexFClrEW-A_w1Axjn2aNqxk-r_CU2LOPk-EktN72Q/exec
 const DRIVE_UPLOAD_URL = https://script.google.com/macros/s/AKfycbx9efC0AU0DjFvHst8PPmRTffUVxc22UIMXbVVHMS2vS31KqnrUzIefasOijrARolxh4g/exec; // optional: receive file uploads for Drive
 const GOOGLE_CLIENT_ID = 507773507877-t1prpckunc9l2700dgfflhfk6jf2de5c.apps.googleusercontent.com
 ; // optional for sign-in
