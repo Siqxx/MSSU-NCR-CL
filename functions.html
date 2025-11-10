@@ -9,25 +9,93 @@
 <div class="container">
   <h3>FUNCTIONAL BRANCHES — Monthly Summaries</h3>
 
-  <div class="card">
-    <h4>PSC</h4>
-    <p>Total Inspected Vessel: <input></p>
-    <p>With Deficiencies: <input></p>
-    <p>Detained: <input></p>
+  <!-- Branch buttons -->
+  <div class="tabs">
+    <button class="tab active" data-section="psc">PSC</button>
+    <button class="tab" data-section="vsei">VSEI / ERE</button>
+    <button class="tab" data-section="ans">ANS</button>
+    <button class="tab" data-section="rss">RSS</button>
+    <button class="tab" data-section="nmarsarc">NMARSARC</button>
+    <button class="tab" data-section="mci">MCI</button>
+    <button class="tab" data-section="te">T&E</button>
   </div>
 
-  <div class="card">
-    <h4>ANS</h4>
-    <p>Total LS PMS Conducted: <input></p>
-    <p>Total Buoy PMS Conducted: <input></p>
-    <p>Operating Efficiency (%): <input></p>
+  <!-- PSC -->
+  <div id="psc" class="card branch active">
+    <h4>PSC — Port State Control</h4>
+    <table border="1" width="100%">
+      <tr><th>Month</th><th>Total Inspected</th><th>With Deficiencies</th><th>Detained</th><th>PSC Division</th><th>Date</th></tr>
+      <tr><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input type="date"></td></tr>
+    </table>
   </div>
 
-  <div class="card">
-    <h4>RSS / NMARSARC / MCI / T&E</h4>
-    <p>Summaries to be entered here later.</p>
+  <!-- VSEI / ERE -->
+  <div id="vsei" class="card branch" style="display:none">
+    <h4>VSEI / ERE — Vessel Safety Examination / External Routine Examination</h4>
+    <table border="1" width="100%">
+      <tr><th>CGS / CGSS</th><th>Total Conducted</th><th>With Deficiencies</th><th>Detained</th><th>Month</th></tr>
+      <tr><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+    </table>
   </div>
+
+  <!-- ANS -->
+  <div id="ans" class="card branch" style="display:none">
+    <h4>ANS — Aids to Navigation Section</h4>
+    <table border="1" width="100%">
+      <tr><th>Month</th><th>LS PMS Conducted</th><th>Buoy PMS Conducted</th><th>Operating Efficiency (%)</th></tr>
+      <tr><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+    </table>
+  </div>
+
+  <!-- RSS -->
+  <div id="rss" class="card branch" style="display:none">
+    <h4>RSS — Recreational Safety Section</h4>
+    <table border="1" width="100%">
+      <tr><th>Month</th><th>Beaches/Resorts Inspected</th><th>Lifeguards Trained</th><th>Location</th></tr>
+      <tr><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+    </table>
+  </div>
+
+  <!-- NMARSARC -->
+  <div id="nmarsarc" class="card branch" style="display:none">
+    <h4>NMARSARC — Maritime Search and Rescue</h4>
+    <table border="1" width="100%">
+      <tr><th>Month</th><th>Total SAR Conducted</th><th>Location</th></tr>
+      <tr><td><input></td><td><input></td><td><input></td></tr>
+    </table>
+  </div>
+
+  <!-- MCI -->
+  <div id="mci" class="card branch" style="display:none">
+    <h4>MCI — Maritime Casualty Investigation</h4>
+    <table border="1" width="100%">
+      <tr><th>Month</th><th>Total MCI Conducted</th><th>Incident Name</th><th>Category (MI / SMC / VSMC)</th></tr>
+      <tr><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+    </table>
+  </div>
+
+  <!-- T&E -->
+  <div id="te" class="card branch" style="display:none">
+    <h4>T&E — Training and Education</h4>
+    <table border="1" width="100%">
+      <tr><th>Month</th><th>Total Conducted</th><th>Location</th><th>Topic</th></tr>
+      <tr><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+    </table>
+  </div>
+
 </div>
+
 <script src="script.js"></script>
+<script>
+// tab switching inside Functional Branches
+document.querySelectorAll('.tabs .tab').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.branch').forEach(sec=>sec.style.display='none');
+    document.getElementById(btn.dataset.section).style.display='block';
+  };
+});
+</script>
 </body>
 </html>
