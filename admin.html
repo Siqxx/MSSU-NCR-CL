@@ -1,20 +1,115 @@
-<script src="script.js"></script>"-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Content-Style-Type" content="text/css">
-<title></title>
-<meta name="Generator" content="Cocoa HTML Writer">
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin — MSSU NCR-CL</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE </span><span class="s2">html</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s1">&lt;</span><span class="s3">html</span><span class="s1"> </span><span class="s4">lang</span><span class="s1">=</span><span class="s5">"en"</span><span class="s1">&gt;</span></p>
-<p class="p3"><span class="s6">&lt;</span><span class="s1">head</span><span class="s6">&gt;&lt;</span><span class="s1">meta</span><span class="s6"> </span><span class="s4">charset</span><span class="s6">=</span><span class="s5">"utf-8"</span><span class="s6">&gt;&lt;</span><span class="s1">title</span><span class="s6">&gt;Admin&lt;/</span><span class="s1">title</span><span class="s6">&gt;&lt;/</span><span class="s1">head</span><span class="s6">&gt;</span></p>
-<p class="p3"><span class="s6">&lt;</span><span class="s1">body</span><span class="s6">&gt;</span></p>
-<p class="p2"><span class="s1">&lt;</span><span class="s3">h3</span><span class="s1">&gt;Admin Section Loaded&lt;/</span><span class="s3">h3</span><span class="s1">&gt;</span></p>
-<p class="p2"><span class="s1">&lt;</span><span class="s3">p</span><span class="s1">&gt;If you see this text, your index.html works correctly.&lt;/</span><span class="s3">p</span><span class="s1">&gt;</span></p>
-<p class="p3"><span class="s6">&lt;/</span><span class="s1">body</span><span class="s6">&gt;</span></p>
-<p class="p3"><span class="s6">&lt;/</span><span class="s1">html</span><span class="s6">&gt;</span></p>
+<div class="container">
+  <h3>ADMIN — Personnel</h3>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" data-unit="mssu-org">MSSU (Organic)</button>
+      <button class="tab" data-unit="mssu-ds">MSSU (DS)</button>
+      <button class="tab" data-unit="psc">PSC Division</button>
+    </div>
+
+    <div id="pscSelectWrap" style="display:none;margin-top:8px">
+      <label>PSC Subdivision</label>
+      <select id="pscSelect">
+        <option>PSC Div Bataan</option>
+        <option>PSC Div South Harbor</option>
+        <option>PSC Div North Harbor</option>
+        <option>PSC Div Subic</option>
+      </select>
+    </div>
+
+    <form id="adminForm" class="grid">
+      <div><label>Item #</label><input id="itemNo" /></div>
+      <div><label>Full name & rank</label><input id="fullName" /></div>
+      <div><label>Designation</label><input id="designation" /></div>
+      <div><label>Assignment From</label><input id="fromDate" type="date" /></div>
+      <div><label>Assignment To</label><input id="toDate" type="date" /></div>
+      <div><label>Present</label><input id="presentCheck" type="checkbox" /></div>
+      <div><label>Collateral</label><input id="collateral" /></div>
+      <div><label>Collateral From</label><input id="collFrom" type="date" /></div>
+      <div><label>Collateral To</label><input id="collTo" type="date" /></div>
+      <div><label>Photo (jpg/png)</label><input id="photoFile" type="file" accept="image/*" /></div>
+      <div><label>SOI (PDF/DOC/DOCX)</label><input id="soiFile" type="file" accept=".pdf,.doc,.docx" /></div>
+      <div><label>Status</label>
+        <select id="status">
+          <option>Active duty</option><option>Schooling (Local)</option><option>Schooling (Foreign)</option>
+          <option>RNR</option><option>Mandatory</option><option>Sick Leave</option><option>AWOL</option>
+          <option>Training</option><option>Lecturer</option>
+        </select>
+      </div>
+      <div><label>Action</label>
+        <select id="action">
+          <option>Active (Organic)</option><option>Active (DS)</option><option>Transferred</option><option>Retired</option>
+        </select>
+      </div>
+
+      <div style="grid-column:1/-1;display:flex;gap:8px;margin-top:8px">
+        <button type="button" id="saveAdmin" class="btn">Save</button>
+        <button type="button" id="clearAdmin" class="btn ghost">Clear</button>
+        <button type="button" id="syncAdmin" class="btn small right">Sync Now</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h4>Personnel List</h4>
+    <div id="adminList"></div>
+    <div id="adminTally" class="tally"></div>
+  </div>
+
+  <div class="card">
+    <h4>Activity Log</h4>
+    <div id="adminLog" class="muted"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+document.querySelectorAll('.tabs .tab').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('.tabs .tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pscSelectWrap').style.display = btn.dataset.unit==='psc' ? 'block' : 'none';
+  };
+});
+
+document.getElementById('saveAdmin').onclick = async ()=>{
+  const form = {
+    unit: document.querySelector('.tabs .tab.active').dataset.unit,
+    pscDiv: document.getElementById('pscSelect').value,
+    item: document.getElementById('itemNo').value,
+    name: document.getElementById('fullName').value,
+    designation: document.getElementById('designation').value,
+    from: document.getElementById('fromDate').value,
+    to: document.getElementById('toDate').value,
+    present: document.getElementById('presentCheck').checked,
+    collateral: document.getElementById('collateral').value,
+    collFrom: document.getElementById('collFrom').value,
+    collTo: document.getElementById('collTo').value,
+    status: document.getElementById('status').value,
+    action: document.getElementById('action').value,
+    createdBy: window.currentUser || 'local',
+    createdAt: new Date().toISOString()
+  };
+
+  const photo = document.getElementById('photoFile').files[0];
+  const soi = document.getElementById('soiFile').files[0];
+  await saveAdminRecord(form, photo, soi);
+  document.getElementById('adminForm').reset();
+};
+
+document.getElementById('clearAdmin').onclick = ()=> document.getElementById('adminForm').reset();
+document.getElementById('syncAdmin').onclick = ()=> syncNow();
+renderAdminList();
+</script>
 </body>
 </html>
