@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MARITIME SAFETY SERVICES UNIT NCR-CL</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Splash Page -->
+<div id="splash" class="center">
+  <div class="splash-card">
+    <h1>MARITIME SAFETY SERVICES UNIT NCR-CL</h1>
+    <p class="lead">Saving Lives</p>
+    <div class="splash-actions">
+      <button id="enterBtn" class="btn primary">Enter</button>
+    </div>
+  </div>
+</div>
+
+<!-- Main App -->
+<div id="app" style="display:none;">
+  <header>
+    <h2>MSSU NCR-CL Portal</h2>
+    <div class="muted">Admin | Logistics | Operations | Functional Branches</div>
+    <button id="printBtn">🖨️ Print</button>
+  </header>
+
+  <nav>
+    <button class="nav-btn active" data-page="admin">Admin</button>
+    <button class="nav-btn" data-page="logistics">Logistics</button>
+    <button class="nav-btn" data-page="operation">Operation</button>
+    <button class="nav-btn" data-page="functional">Functional Branches</button>
+    <button class="nav-btn" data-page="others">Others</button>
+  </nav>
+
+  <main>
+    <iframe id="pageFrame" src="admin.html"
+      style="width:100%;height:calc(100vh - 200px);border:0;"></iframe>
+  </main>
+</div>
+
+<script>
+// ---- SIMPLE FUNCTIONALITY ----
+document.getElementById("enterBtn").onclick = () => {
+  document.getElementById("splash").style.display = "none";
+  document.getElementById("app").style.display = "block";
+};
+
+document.querySelectorAll(".nav-btn").forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("pageFrame").src = btn.dataset.page + ".html";
+  };
+});
+
+document.getElementById("printBtn").onclick = () => {
+  const iframe = document.getElementById("pageFrame");
+  iframe.contentWindow.focus();
+  iframe.contentWindow.print();
+};
+</script>
+</body>
+</html>
