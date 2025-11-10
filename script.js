@@ -1,6 +1,6 @@
 // script.js — starter connector for Admin page
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4MtbB9zPnDa0sYjcT1e4EPFq901k26RzYGYfCIGT1J18911TU2wxZbe6qXyvdC865mg/exec';
-const DRIVE_UPLOAD_URL = 'https://script.google.com/macros/s/AKfycbwiRAik98enRKbmbne-aCHMk7sw0p68al-RfB2KntpffWchCLbapFUgOWOsnjJ0xVUocg/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbww9SeQ_giQeK36_DwMJTJM4le9BoRT3yA6G6uvR7yW9NGTGdz7EyQh5fx_qATQcfDpbw/exec';
+const DRIVE_UPLOAD_URL = 'https://script.google.com/macros/s/AKfycbzfmqy-yenLK5Po36Z1Cs9U4Gd5RXez0p1ZboSZt5VyOikVgqBcsVFELRHqpyqRbE4Udg/exec';
 const GOOGLE_CLIENT_ID = '507773507877-t1prpckunc9l2700dgfflhfk6jf2de5c.apps.googleusercontent.com';
 async function saveAdminRecord(form, photo, soi) {
   try {
